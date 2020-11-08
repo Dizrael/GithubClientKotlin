@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_users.*
-import kotlinx.android.synthetic.main.fragment_users.view.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import ru.dizraelapps.githubclientkotlin.GithubApplication
 import ru.dizraelapps.githubclientkotlin.R
 import ru.dizraelapps.githubclientkotlin.mvp.model.GithubUserRepo
-import ru.dizraelapps.githubclientkotlin.mvp.presenter.MainPresenter
 import ru.dizraelapps.githubclientkotlin.mvp.presenter.UsersPresenter
 import ru.dizraelapps.githubclientkotlin.mvp.view.UsersView
 import ru.dizraelapps.githubclientkotlin.ui.adapter.UserRVAdapter

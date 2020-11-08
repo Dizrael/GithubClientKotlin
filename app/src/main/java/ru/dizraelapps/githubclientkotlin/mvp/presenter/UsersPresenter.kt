@@ -8,6 +8,7 @@ import ru.dizraelapps.githubclientkotlin.mvp.presenter.list.IUserListPresenter
 import ru.dizraelapps.githubclientkotlin.mvp.view.UserItemView
 import ru.dizraelapps.githubclientkotlin.mvp.view.UsersView
 import ru.dizraelapps.githubclientkotlin.ui.fragments.UsersFragment
+import ru.dizraelapps.githubclientkotlin.ui.navigation.Screens
 import ru.terrakok.cicerone.Router
 
 class UsersPresenter(private val usersRepo: GithubUserRepo, private val router: Router) : MvpPresenter<UsersView>() {
@@ -20,7 +21,7 @@ class UsersPresenter(private val usersRepo: GithubUserRepo, private val router: 
         loadData()
 
         usersListPresenter.itemClickListener = {
-            //TODO: Переход на экран пользователя
+            router.navigateTo(Screens.SingleUserScreen(it.pos))
         }
     }
 

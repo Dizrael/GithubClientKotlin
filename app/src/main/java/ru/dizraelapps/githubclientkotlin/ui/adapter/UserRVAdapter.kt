@@ -36,6 +36,7 @@ class UserRVAdapter(private val presenter: IUserListPresenter) :
         override fun setLogin(text: String) = with(containerView) {
             tv_login.text = text
         }
+
     }
 
 }
