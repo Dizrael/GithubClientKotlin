@@ -1,5 +1,8 @@
 package ru.dizraelapps.githubclientkotlin.mvp.presenter
 
+import android.util.Log
+import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import ru.dizraelapps.githubclientkotlin.GithubApplication
 import ru.dizraelapps.githubclientkotlin.mvp.model.GithubUserRepo
@@ -13,7 +16,31 @@ import ru.terrakok.cicerone.Router
 
 class UsersPresenter(private val usersRepo: GithubUserRepo, private val router: Router) : MvpPresenter<UsersView>() {
 
+    private val TAG: String = UsersPresenter::class.java.simpleName
+
     val usersListPresenter = UsersListPresenter()
+    private val usersListObserver = object : Observer<GithubUser>{
+        override fun onSubscribe(d: Disposable?) {
+            Log.i(TAG, "onSubscribe")
+        }
+
+        override fun onNext(users: GithubUser) {
+            Log.i(TAG, "onNext")
+            users.run {
+                usersListPresenter.users.add(this)
+                viewState.updateList()
+            }
+        }
+
+        override fun onError(e: Throwable?) {
+            Log.i(TAG, "onError: " + e?.message)
+        }
+
+        override fun onComplete() {
+            Log.i(TAG, "onComplete")
+        }
+
+    }
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -26,13 +53,11 @@ class UsersPresenter(private val usersRepo: GithubUserRepo, private val router: 
     }
 
     private fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
-        viewState.updateList()
+        usersRepo.getUsersRx().subscribe(usersListObserver)
     }
 
     class UsersListPresenter : IUserListPresenter {
-        val users = mutableListOf<GithubUser>()
+        var users = mutableListOf<GithubUser>()
 
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
